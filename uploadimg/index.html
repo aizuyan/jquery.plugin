@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<div id="">
+			<span id="up_img">IMG_ICON</span>
+			<div id="show_up_img"></div>
+			<input style="display:none" type="file" name="up_file" id="up_file"/>
+		</div>
+	</body>
+	<script type="text/javascript" src="../src/jquery.min.js"></script>
+	<script type="text/javascript" src="uploadimg.js"></script>
+	<script>
+		$("#up_img").uploadImg("#up_file", "#show_up_img");
+	</script>
+</html>
