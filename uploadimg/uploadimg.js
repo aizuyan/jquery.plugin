@@ -2,21 +2,36 @@
     $.fn.uploadImg = function(file, show, opt) {
         var me, c;
         opt = typeof(opt) == "object" ? opt : {};
-        if(!window.applicationCache && typeof(opt.upapi) == "undefined") {
-            alert("please use explore that support html5");
-            return false;
-        }else if(!window.applicationCache && typeof(opt.upapi) != "undefined") {
-            $.ajax
-        }
         me = $(this);
         file = (typeof(file) == "string") ? $(file) : file;
         show = (typeof(show) == "string") ? $(show) : show;
+        me.click(function(){
+            file.trigger('click');
+        });
+        if(!window.applicationCache && typeof(opt.action) == "undefined") {
+            alert("please use explore that support html5");
+            return false;
+        }else if(!window.applicationCache && typeof(opt.action) != "undefined") {
+            var id = 'form' + parseInt(Math.random()*10000000);
+            var submit_name = 'submit' + parseInt(Math.random()*10000000);
+            var _html = '<iframe name="'+ submit_name +'" style="display:none;"></iframe>';
+            $(_html).appendTo($('body'));
+            file.change(function(){
+                var fileInfo = $(this);
+                fileInfo.wrap(function() {
+                    return '<form id="'+ id +'" action="' + opt.action + '" method="POST" enctype="multipart/form-data" target="'+submit_name+'" />'
+                });
+                fileInfo.parent('form').submit(function(e) { e.stopPropagation(); }).submit()
+            });
+
+            return;
+        }
         file.change(function(){
-            var file = $(this),
+            var fileInfo = $(this),
                 img,
                 FR = new FileReader(),
                 imgFile,ctx;
-            imgFile  = file[0].files[0];
+            imgFile  = fileInfo[0].files[0];
             FR.readAsDataURL(imgFile);
             FR.onload = function(){
                 var result = this.result;
@@ -36,9 +51,6 @@
                 ctx = c.getContext('2d');
                 ctx.clearRect(0, 0, (typeof(opt.width) == "undefined") ? 100 : opt.width, (typeof(opt.height) == "undefined") ? 100 : opt.height);
            }
-        });
-        me.click(function(){
-            file.trigger('click');
         });
     };
 })($);

@@ -15,6 +15,8 @@
 	<script type="text/javascript" src="../src/jquery.min.js"></script>
 	<script type="text/javascript" src="uploadimg.js"></script>
 	<script>
-		$("#up_img").uploadImg("#up_file", "#show_up_img");
+		$("#up_img").uploadImg("#up_file", "#show_up_img", {
+			action: "http://localhost/up.php"
+		});
 	</script>
 </html>
