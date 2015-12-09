@@ -1,4 +1,28 @@
 (function($){
+	$.fn.uploadImgFrame = function(_opt) {
+		var opt = {
+          action: '',
+          params: [],
+          onStart: function() {},
+          onSuccess: function() {},
+          onError: function() {},
+          onAbort: function() {},
+          onFail: function() {}
+        },
+        me = $(this),
+        iframe_id;
+        if(_opt) {
+        	$.extend(opt, _opt);
+        }
+        iframe_id = 'jquery-iframe-' + parseInt(Math.random() * 10000000);        
+        me.wrap(function() {
+        	return '<form action="' + opt.action + '" method="POST" enctype="multipart/form-data" target="'+iframe_id+'" />';
+        });
+        $('body').after('<iframe width="0" height="0" style="display:none;" name="'+iframe_id+'" id="'+iframe_id+'" />');
+		$('#'+iframe_id).get(0).onload = function() {
+           	alert($(this).contents().text());
+        };
+	};
 	$.fn.uploadImg = function(_opt) {
 		var opt = {
           action: '',
@@ -51,7 +75,7 @@
 
 	    xhr.onreadystatechange = function() {
 	        if (xhr.readyState == 4 && xhr.status == 200) {
-	            opt.onSuccess.apply(me, JSON.parse(xhr.responseText));
+	            opt.onSuccess.call(me, JSON.parse(xhr.responseText));
 	        } else if (xhr.status != 200) {
 	            opt.onFail.apply(me, {'xhrState': xhr.readyState, 'xhrStatus':xhr.status});
 	            return false;

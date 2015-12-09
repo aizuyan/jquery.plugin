@@ -17,13 +17,16 @@
 	<script>
 		$("#up_file").change(function(){
 			var me = $(this);
-			me.uploadImg({
+			me.uploadImgFrame({
 				action: 'http://localhost/up.php',
 				params: ['yanruitao', 23],
 				onStart: function(name, age) {
 					alert(this.val());
 					alert("What is up!!\n"+ name + "\n" + age);
 				},
+				onSuccess: function(obj) {
+					$("#show_up_img").html('<img src="'+ obj.img +'">');
+				}
 			});
 		});
 	</script>
